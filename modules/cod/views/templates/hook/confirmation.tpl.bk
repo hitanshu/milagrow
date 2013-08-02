@@ -23,22 +23,9 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-{*<script type="text/javascript">*}
-    {*$(function () {*}
-        {*$("#redirect").submit();*}
-    {*});*}
-
-{*</script>*}
-<p>You will now be redirected to the Payment Gateway where you can complete the payment process. Thank you once again
-    for shopping with us, and we look forward to being in touch!</p>
-
-<h6>If you are not automatically redirected to CCEAVENUE within 5 seconds, please click the button below</h6>
-{$path}
-jar file error={$output}
-<form method="post" id="redirect" name="redirect" action="http://www.ccavenue.com/shopzone/cc_details.jsp">
-
-    <input type=hidden name=encRequest value="{$enc_request}">
-    <input type=hidden name=Merchant_Id value="{$merchant_id}">
-    <input type="submit" value="Pay Now"/>
-</form>
-
+<p>{l s='Your order on' mod='cod'} <span class="bold">{$shop_name}</span> {l s='is complete.' mod='cod'}
+	<br /><br />
+	{l s='You have chosen the cash on delivery method.' mod='cashondelivery'}
+   	<br /><br /><span class="bold">{l s='Your order will be sent very soon.' mod='cod'}</span>
+	<br /><br />{l s='For any questions or for further information, please contact our' mod='cod'} <a href="{$link->getPageLink('contact-form', true)}">{l s='customer support' mod='cod'}</a>.
+</p>

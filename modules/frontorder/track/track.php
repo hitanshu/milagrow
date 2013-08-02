@@ -13,13 +13,23 @@ $order_id = Tools::getValue('order_id');
 if (!isset($order_id))
     return false;
 try {
-    $sql = 'SELECT tracking_number,url from ' . _DB_PREFIX_ . 'order_carrier join ' . _DB_PREFIX_ . 'carrier on ' . _DB_PREFIX_ . 'order_carrier.id_carrier=' . _DB_PREFIX_ . 'carrier.id_carrier WHERE id_order=' . $order_id;
+    $sql = 'SELECT tracking_number from ' . _DB_PREFIX_ . 'order_carrier WHERE id_order=' . $order_id;
     if ($row = Db::getInstance()->getRow($sql)) {
         $tracking_number = $row['tracking_number'];
-        $url = $row['url'];
-        if (empty($row['url']))
+        $data = explode('-', 'FDX-1234');
+        $carrier = '';
+        if (!empty($data))
+            $carrier = $data[0];
+        $exactTrackingNumber = ltrim(strstr($tracking_number, '-'), '-');
+        //find carrier url from name
+        $query = 'Select url from ' . _DB_PREFIX_ . 'carrier where name=\'' . $carrier . '\'';
+        $url = '';
+        if ($row2 = Db::getInstance()->getRow($query)) {
+            $url = $row2['url'];
+        }
+        if (empty($url))
             $url = '#';
-        $url = str_replace('@', $tracking_number, $url);
+        $url = str_replace('@', $exactTrackingNumber, $url);
         echo json_encode(array('url' => $url));
     } else {
         echo json_encode(array('url' => '#'));

@@ -1,4 +1,5 @@
-{*
+<?php
+/*
 * 2007-2013 PrestaShop
 *
 * NOTICE OF LICENSE
@@ -21,24 +22,27 @@
 *  @copyright  2007-2013 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
-*}
+*/
 
-{*<script type="text/javascript">*}
-    {*$(function () {*}
-        {*$("#redirect").submit();*}
-    {*});*}
+//require_once(dirname(__FILE__).'/../../config/config.inc.php');
+//require_once(dirname(__FILE__).'/../../init.php');
 
-{*</script>*}
-<p>You will now be redirected to the Payment Gateway where you can complete the payment process. Thank you once again
-    for shopping with us, and we look forward to being in touch!</p>
 
-<h6>If you are not automatically redirected to CCEAVENUE within 5 seconds, please click the button below</h6>
-{$path}
-jar file error={$output}
-<form method="post" id="redirect" name="redirect" action="http://www.ccavenue.com/shopzone/cc_details.jsp">
+global $smarty;
+include('../../config/config.inc.php');
+include('../../header.php');
 
-    <input type=hidden name=encRequest value="{$enc_request}">
-    <input type=hidden name=Merchant_Id value="{$merchant_id}">
-    <input type="submit" value="Pay Now"/>
-</form>
+$smarty->display(dirname(__FILE__).'/b2b.tpl');
 
+include('../../footer.php');
+?>
+//$paypal = new PayPal();
+//
+//$id_lang = (int)($cookie->id_lang ? $cookie->id_lang : Configuration::get('PS_LANG_DEFAULT'));
+//$iso_lang = Tools::strtolower(Language::getIsoById($id_lang));
+//
+//$paypal->context->smarty->assign('iso_code', $iso_lang);
+//
+//$display = new BWDisplay();
+//$display->setTemplate(_PS_MODULE_DIR_.'paypal/views/templates/front/about.tpl');
+//$display->run();
