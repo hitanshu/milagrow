@@ -1,0 +1,7 @@
+Hi {name},
+
+New Bulk purchase entry at {shop_name}.
+
+Coupon Code:{couponCode}
+
+{shop_url} powered by PrestaShop™

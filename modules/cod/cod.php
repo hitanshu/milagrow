@@ -45,8 +45,8 @@ class COD extends PaymentModule
 
         parent::__construct();
 
-        $this->displayName = $this->l('COD(GAPS)');
-        $this->description = $this->l('Accept cash on delivery payments');
+        $this->displayName = $this->l('COD');
+        $this->description = $this->l('Accept cash on delivery payments developed by GAPS');
 
         /* For 1.4.3 and less compatibility */
         $updateConfig = array('PS_OS_CHEQUE', 'PS_OS_PAYMENT', 'PS_OS_PREPARATION', 'PS_OS_SHIPPING', 'PS_OS_CANCELED', 'PS_OS_REFUND', 'PS_OS_ERROR', 'PS_OS_OUTOFSTOCK', 'PS_OS_BANKWIRE', 'PS_OS_PAYPAL', 'PS_OS_WS_PAYMENT');

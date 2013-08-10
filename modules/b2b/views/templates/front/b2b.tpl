@@ -23,57 +23,106 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 <script type="text/javascript" src="{$jsSource}"></script>
-<h3>{l s='B2B' mod='b2b'}</h3>
-<form id="b2b" action="{$form_action}" method="post" data-ajax="true" novalidate="">
-    <p>
-        B2B
+<div class="container">
+    <div class="contain-size">
+        <div class="main">
+            <div class="main-inner">
+                <div class="col-main">
+                    <div class="page-title">
+                        <h1>BULK PURCHASE</h1>
+                    </div>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut neque pulvinar, egestas
+                        purus nec, dignissim orci. In tempus massa vestibulum, imperdiet dui eget, varius dolor.
+                    </p>
 
-    </p>
+                    <div class="col2-set">
+                        <div class="col-1 box-in">
+                            <div class="content">
+                                <form id="b2b" action="{$form_action}" method="post" data-ajax="true" novalidate="">
 
-    <p>
-        <label for="name">Name</label>
-        </br>
-        <input type="text" id="name" name="name"/>
-    </p>
+                                    <ul class="form-list">
+                                        <li>
+                                            <label for="name" class="required"><em>*</em>Name</label>
 
-    <p>
-        <label>email</label><br>
-        <input type="email" id="email" name="email"/>
-    </p>
+                                            <div class="input-box">
+                                                <input type="text" id="name" name="name"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="email" class="required"><em>*</em>Email</label>
 
-    <p>
-        <label>mobile</label><br>
-        <input type="text" id="mobile" name="mobile"/>
-    </p>
+                                            <div class="input-box">
+                                                <input type="email" id="email" name="email"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="mobile" class="required"><em>*</em>Mobile</label>
 
-    <p>
-        <label>City</label><br>
-        <input type="text" id="city" name="city"/>
-    </p>
+                                            <div class="input-box">
+                                                <input type="text" id="mobile" name="mobile"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>City</label>
 
-    <p>
-        <label>State</label><br>
-        <input type="text" id="state" name="state"/>
-    </p>
+                                            <div class="input-box">
+                                                <input type="text" id="city" name="city"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>State</label>
 
-    <p>
-        <label>Select Product</label><br>
-        <select name="product" id="product">
-            <option value="">Select Product</option>
-            {foreach from=$products key=myId item=i}
-                <option value="{$i.id_product}">{$i.name}</option>
-            {/foreach}
-        </select>
-    </p>
-    <p>
-        <label>Quantity</label><br>
-        <input type="text" id="quantity" name="quantity"/>
-    </p>
-    <input type="hidden" name="formName" value="b2b"/>
+                                            <div class="input-box">
+                                                <input type="text" id="state" name="state"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="product" class="required"><em>*</em>Select Product</label>
 
-    <p>
-        <input type="submit" name="submit"/><span id="ajax-loader" style="display: none"><img
-                    src="{$this_path}ajax-loader.gif" alt="{l s='ajax-loader' mod='b2b'}"/></span>
-    </p>
-</form>
+                                            <div class="input-box">
+                                                <select name="product" id="product">
+                                                    <option value="">Select Product</option>
+                                                    {foreach from=$products key=myId item=i}
+                                                        <option value="{$i.id_product}">{$i.name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="quantity" class="required"><em>*</em>Quantity</label>
+
+                                            <div class="input-box">
+                                                <select name="quantity" id="quantity">
+                                                    <option value="">Select Quantity</option>
+                                                    <option value="10-20">10-20</option>
+                                                    <option value="21-50">21-50</option>
+                                                    <option value="51-100">51-100</option>
+                                                    <option value="101">More than 100</option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <input type="hidden" name="formName" value="b2b"/>
+                                        <li>
+                                            <p class="required">*Required Fields</p>
+                                            <button type="submit" name="submit" class="button">
+                                                <span><span>Submit</span></span>
+                                            </button><span
+                                                    id="ajax-loader"
+                                                    style="display: none"><img
+                                                        src="{$this_path}ajax-loader.gif"
+                                                        alt="{l s='ajax-loader' mod='b2b'}"/></span>
+
+                                        </li>
+                                    </ul>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

@@ -11,7 +11,7 @@ define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
 define('_SMS_USERNAME', 'GreenApple1');
 define('_SMS_PASSWORD', 'GreenApple1');
 define('_SMS_SENDERID', 'MSNGRi');
-define('_B2B_SMS_MESSAGE', 'Your mobile verification code is %s.Milagrow HumanTech');
+define('_B2B_SMS_MESSAGE', 'Please use code, %s, to verify your mobile at Milagrow Bulk Purchase. Please ignore, if you have received this message in error.');
 
 class B2bVerifyModuleFrontController extends ModuleFrontController
 {
@@ -23,6 +23,8 @@ class B2bVerifyModuleFrontController extends ModuleFrontController
         parent::initContent();
 
         $rowId = Tools::getValue('key');
+        if (empty($rowId))
+            Tools::redirect(B2b::getShopDomainSsl(true, true) . '/index.php?fc=module&module=b2b&controller=init');
 
         $this->context->smarty->assign(array(
             'form_action' => B2b::getShopDomainSsl(true, true) . '/index.php?fc=module&module=b2b&controller=verify',
@@ -42,7 +44,7 @@ class B2bVerifyModuleFrontController extends ModuleFrontController
 
             $sql = 'Select * from ' . _DB_PREFIX_ . 'b2b where id_b2b=' . $rowId . ' and mobileCode=\'' . $code . '\'';
             if ($row = Db::getInstance()->getRow($sql)) {
-                Db::getInstance()->update('b2b', array('is_verified' => true), "id_b2b=$rowId");
+                Db::getInstance()->update('b2b', array('is_verified' => 1), "id_b2b=$rowId");
                 $url = B2b::getShopDomainSsl(true, true);
                 $values = array('fc' => 'module', 'module' => 'b2b', 'controller' => 'success', 'key' => $row['id_b2b']);
                 $url .= '/index.php?' . http_build_query($values, '', '&');
@@ -56,7 +58,9 @@ class B2bVerifyModuleFrontController extends ModuleFrontController
             $rowId = Tools::getValue('key');
             $mobile = Tools::getValue('mobile');
             $newVerificationCode = mt_rand(100000, 999999);
-            if (Db::getInstance()->update('b2b', array('mobile' => $mobile, 'mobileCode' => $newVerificationCode, 'is_verified' => false), "id_b2b=$rowId")) {
+            Db::getInstance()->update('b2b', array('mobile' => $mobile, 'mobileCode' => $newVerificationCode, 'is_verified' => 0), "id_b2b=$rowId");
+            $affectedRows = Db::getInstance()->Affected_Rows();
+            if ($affectedRows) {
                 $this->sendSMS($mobile, $newVerificationCode);
                 echo json_encode(array('status' => true, 'message' => 'Mobile number updated and new code sent.'));
             } else {

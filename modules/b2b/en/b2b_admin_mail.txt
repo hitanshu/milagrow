@@ -1,0 +1,12 @@
+Hi Admin,
+
+New Bulk purchase entry at {shop_name}.
+
+Customer Name:{name}
+Customer e-mail address:{email}
+Customer Mobile:{mobile}
+ Product Name:{product}
+Product Quantity:{quantity}
+
+
+{shop_url} powered by PrestaShop™

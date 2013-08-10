@@ -8,8 +8,10 @@ define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
 define('_SMS_USERNAME', 'GreenApple1');
 define('_SMS_PASSWORD', 'GreenApple1');
 define('_SMS_SENDERID', 'MSNGRi');
-define('_SMS_MESSAGE_NEW_ORDER', 'Thank you for shopping with Milagrow HumanTech your order number is %s');
-define('_SMS_MESSAGE_SHIPPED', 'Your order number %s has been shipped. Shipping No. is %s');
+define('_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS', 'Thank you placing the order, %s of amount Rs.%s. Your order is being processed. Please check your email for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER_WITH_CARRIER_NAME', 'Your order, %s , has been shipped via %s with Tracking ID %s. Please check your account for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER', 'Your order, %s , has been shipped with Tracking ID %s. Please check your account for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITHOUT_TRACKING_NUMBER', 'Your order, %s , has been shipped. Please check your account for additional details.');
 class SmsModule extends Module
 {
     public function __construct()
@@ -37,7 +39,7 @@ class SmsModule extends Module
     {
         if (Shop::isFeatureActive())
             Shop::setContext(Shop::CONTEXT_ALL);
-        return parent::install() && $this->registerHook('actionOrderStatusPostUpdate') && $this->registerHook('actionValidateOrder');
+        return parent::install() && $this->registerHook('actionOrderStatusPostUpdate') && $this->registerHook('actionPaymentConfirmation');
     }
 
     public function uninstall()
@@ -45,14 +47,15 @@ class SmsModule extends Module
         return parent::uninstall() && Configuration::deleteByName('MYMODULE_NAME');
     }
 
-    public function hookactionValidateOrder($params = null)
+    public function hookactionPaymentConfirmation($params = null)
     {
         try {
-            $sql = 'SELECT ' . _DB_PREFIX_ . 'orders.reference,' . _DB_PREFIX_ . 'address.phone_mobile FROM ' . _DB_PREFIX_ . 'orders join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'orders.id_customer=' . _DB_PREFIX_ . 'customer.id_customer join ' . _DB_PREFIX_ . 'address on ' . _DB_PREFIX_ . 'orders.id_address_delivery=' . _DB_PREFIX_ . 'address.id_address WHERE ' . _DB_PREFIX_ . 'orders.reference=\'' . $params['order']->reference.'\'';
+            $sql = 'SELECT ' . _DB_PREFIX_ . 'orders.reference,' . _DB_PREFIX_ . 'address.phone_mobile,total_paid_tax_incl as amount FROM ' . _DB_PREFIX_ . 'orders join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'orders.id_customer=' . _DB_PREFIX_ . 'customer.id_customer join ' . _DB_PREFIX_ . 'address on ' . _DB_PREFIX_ . 'orders.id_address_delivery=' . _DB_PREFIX_ . 'address.id_address WHERE ' . _DB_PREFIX_ . 'orders.id_order=' . $params['id_order'];
             if ($row = Db::getInstance()->getRow($sql)) {
                 $reference_number = $row['reference'];
                 $mobile = $row['phone_mobile'];
-                $message = sprintf(_SMS_MESSAGE_NEW_ORDER, $reference_number);
+                $amount = $row['amount'];
+                $message = sprintf(_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS, $reference_number, $amount);
                 if (_PS_SMS_SEND) {
                     $username = _SMS_USERNAME;
                     $password = _SMS_PASSWORD;
@@ -81,12 +84,29 @@ class SmsModule extends Module
     public function hookactionOrderStatusPostUpdate($params = null)
     {
         try {
-            $sql = 'SELECT ' . _DB_PREFIX_ . 'orders.reference,' . _DB_PREFIX_ . 'address.phone_mobile,' . _DB_PREFIX_ . 'order_state_lang.name as status,'._DB_PREFIX_.'orders.shipping_number as shipping_number FROM ' . _DB_PREFIX_ . 'orders join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'orders.id_customer=' . _DB_PREFIX_ . 'customer.id_customer join ' . _DB_PREFIX_ . 'address on ' . _DB_PREFIX_ . 'orders.id_address_delivery=' . _DB_PREFIX_ . 'address.id_address join ' . _DB_PREFIX_ . 'order_state_lang on ' . _DB_PREFIX_ . 'order_state_lang.id_order_state=' . _DB_PREFIX_ . 'orders.current_state WHERE ' . _DB_PREFIX_ . 'orders.id_order=' . $params['id_order'];
+            $carriersArr = array('FDX' => 'FEDEX', 'BLD' => 'BlueDart');
+            $sql = 'SELECT ' . _DB_PREFIX_ . 'orders.reference,' . _DB_PREFIX_ . 'address.phone_mobile,' . _DB_PREFIX_ . 'order_state_lang.name as status,' . _DB_PREFIX_ . 'orders.shipping_number as shipping_number FROM ' . _DB_PREFIX_ . 'orders join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'orders.id_customer=' . _DB_PREFIX_ . 'customer.id_customer join ' . _DB_PREFIX_ . 'address on ' . _DB_PREFIX_ . 'orders.id_address_delivery=' . _DB_PREFIX_ . 'address.id_address join ' . _DB_PREFIX_ . 'order_state_lang on ' . _DB_PREFIX_ . 'order_state_lang.id_order_state=' . _DB_PREFIX_ . 'orders.current_state WHERE ' . _DB_PREFIX_ . 'orders.id_order=' . $params['id_order'];
             if ($row = Db::getInstance()->getRow($sql)) {
                 $reference_number = $row['reference'];
                 $mobile = $row['phone_mobile'];
-                $shipping_number=$row['shipping_number'];
-                $message = sprintf(_SMS_MESSAGE_SHIPPED, $reference_number,$shipping_number);
+                $shipping_number = $row['shipping_number'];
+                if (empty($shipping_number))
+                    $message = sprintf(_SMS_MESSAGE_SHIPPED_WITHOUT_TRACKING_NUMBER, $reference_number);
+                else {
+                    $data = explode('-', $shipping_number);
+                    $carrier = null;
+                    if (!empty($data)) {
+                        if (array_key_exists($data[0], $carriersArr))
+                            $carrier = $carriersArr[$data[0]];
+                    }
+
+                    $exactTrackingNumber = ltrim(strstr($shipping_number, '-'), '-');
+                    if (!empty($carrier))
+                        $message = sprintf(_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER_WITH_CARRIER_NAME, $reference_number, $carrier, $exactTrackingNumber);
+                    else
+                        $message = sprintf(_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER, $reference_number, $exactTrackingNumber);
+                }
+
                 if (_PS_SMS_SEND) {
                     if ($row['status'] == "Shipped" || $row['status'] == "shipped") {
                         $username = _SMS_USERNAME;

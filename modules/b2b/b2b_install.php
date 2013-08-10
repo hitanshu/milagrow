@@ -45,7 +45,7 @@ class B2bInstall
 			`city` varchar(255) NOT NULL,
 			`state` varchar(255) NOT NULL,
 			`product` int(10) NOT NULL,
-			`quantity` int(11) NOT NULL,
+			`quantity` varchar(255) NOT NULL,
 			`is_verified` BOOLEAN DEFAULT NULL,
 			`mobileCode` varchar(50) DEFAULT NULL,
 		    PRIMARY KEY (`id_b2b`)

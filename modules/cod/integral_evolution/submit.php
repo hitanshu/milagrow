@@ -10,7 +10,11 @@ include_once(dirname(__FILE__) . '/../../../config/config.inc.php');
 include_once(dirname(__FILE__) . '/../../../init.php');
 
 require("libFunctions.php");
-
+define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
+define('_SMS_USERNAME', 'GreenApple1');
+define('_SMS_PASSWORD', 'GreenApple1');
+define('_SMS_SENDERID', 'MSNGRi');
+define('_SMS_MESSAGE', 'Thank you for placing the order, %s of amount Rs. %s. Your order is being processed. Please check your email for additional details.');
 $WorkingKey = ""; //put in the 32 bit working key in the quotes provided here
 $encResponse = $_REQUEST["encResponse"];
 $path = getcwd() . _MODULE_DIR_ . 'cod/integral_evolution/ccavutil.jar';
@@ -36,11 +40,11 @@ $delivery_cust_address = "";
 $delivery_cust_tel = "";
 $delivery_cust_notes = "";
 $Merchant_Param = "";
-$card_category='';
-$nb_order_no='';
-$card_number='';
-$card_expiration='';
-$card_holder='';
+$card_category = '';
+$nb_order_no = '';
+$card_number = '';
+$card_expiration = '';
+$card_holder = '';
 
 while ($tok !== false) {
     $temp = $tok;
@@ -84,7 +88,7 @@ if ($Checksum && $AuthDesc === "Y") {
             Db::getInstance()->insert('order_payment', array(
                 'id_currency' => (int)$existing_id_currency,
                 'amount' => $amount,
-                'payment_method' => pSQL($existing_payment_method),
+                'payment_method' => pSQL('ccavenue'),
                 'conversion_rate' => $existing_conversion_rate,
                 'transaction_id' => $nb_order_no,
                 'card_number' => $card_number,
@@ -130,4 +134,78 @@ if ($Checksum && $AuthDesc === "Y") {
     $this->errors[] = Tools::displayError('Sorry an error occured while your transaction');
     Tools::redirect('index.php?controller=my-account');
     //Here you need to check for the checksum, the checksum did not match hence the error.
+}
+
+
+function sendMessage($product, $dateTime, $mobile)
+{
+    try {
+        $message = sprintf(_SMS_MESSAGE, $product, $dateTime);
+
+        $username = _SMS_USERNAME;
+        $password = _SMS_PASSWORD;
+        //create api url to hit
+        $sms_url = _SMS_URL;
+        $senderId = _SMS_SENDERID;
+        $sms_url = "$sms_url?username=$username&password=$password&sendername=$senderId&mobileno=$mobile&message=" . urlencode($message);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $sms_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, '6');
+        $result = curl_exec($ch);
+        $error = curl_error($ch);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+    } catch (Exception $e) {
+        //consuming exception
+    }
+
+}
+
+function sendEmails($data)
+{
+    try {
+        $res = Mail::Send(
+            (int)1,
+            'admin_mail',
+            Mail::l('', (int)1),
+            $data,
+            Configuration::get('PS_SHOP_EMAIL'),
+            'Administrator',
+            null,
+            true,
+            null,
+            null,
+            getcwd() . _MODULE_DIR_ . 'demoregistration/',
+            false,
+            null
+        );
+
+    } catch (Exception $e) {
+        return false;
+    }
+
+    try {
+        $res = Mail::Send(
+            (int)1,
+            'customer_mail',
+            Mail::l('Milagrow Human Tech : COD Partial Payment', (int)1),
+            $data,
+            $data['{email}'],
+            $data['{name}'],
+            null,
+            true,
+            null,
+            null,
+            getcwd() . _MODULE_DIR_ . 'demoregistration/',
+            false,
+            null
+        );
+
+    } catch (Exception $e) {
+        return false;
+    }
+
 }

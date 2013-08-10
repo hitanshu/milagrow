@@ -33,13 +33,13 @@ $(document).ready(function () {
             alert('Please enter the code we have sent to you');
             return;
         }
-        $('#ajax-loader').show();
+        $('#ajax-loader-verify').show();
         $.ajax({
             type: "POST",
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function (data) {
-                $('#ajax-loader').hide();
+                $('#ajax-loader-verify').hide();
                 if (data.status == false) {
                     alert(data.message);
                 }
@@ -64,13 +64,13 @@ $(document).ready(function () {
             alert('Please enter valid 10 digit mobile number');
             return;
         }
-        $('#ajax-loader').show();
+        $('#ajax-loader-update').show();
         $.ajax({
             type: "POST",
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function (data) {
-                $('#ajax-loader').hide();
+                $('#ajax-loader-update').hide();
                 if (data.status == false) {
                     alert(data.message);
                 }
@@ -119,11 +119,6 @@ $(document).ready(function () {
         }
         else if (!quantity) {
             alert('Quantity is required');
-            return;
-        }
-
-        else if (!validateInt(quantity)) {
-            alert('Please enter quanity in number');
             return;
         }
 
