@@ -1,0 +1,139 @@
+/*a.delete_link {*/
+/*background: url("../img/delete.gif") no-repeat scroll left bottom transparent !important;*/
+/*display: block;*/
+/*float: right;*/
+/*font-size: 0;*/
+/*}*/
+
+/*#adm_categories {*/
+/*width: 100%;*/
+/*border-collapse: collapse;*/
+/*}*/
+
+ul li.fc_admin_tab {
+    padding-top: 13px;
+    border: 1px solid #CCCCCC;
+    display: block;
+    float: left;
+    height: 29px;
+    list-style: none outside none;
+    margin: 0 1px 0 0;
+}
+
+ul li.fc_admin_tab_active {
+    padding-top: 13px;
+    border: 1px solid #CCCCCC;
+    display: block;
+    float: left;
+    height: 29px;
+    list-style: none outside none;
+    margin: 0 1px 0 0;
+    background-color: #49B2FF;
+}
+
+/*li.fc_btn_compare {*/
+/*padding-left: 20px !important;*/
+/*background: url("../img/price_comparison.png") no-repeat;*/
+/*}*/
+
+/*.comparison_header td {*/
+/*background-color: #383838;*/
+/*color: #FFFFFF;*/
+/*text-align: left;*/
+/*font-weight: bold;*/
+/*padding: 3px;*/
+/*border: 1px solid #CDCDCD*/
+/*}*/
+
+.compare-cart-wrapper {
+    width: 700px;
+    height: 80px;
+    background-color: #d7eaf0;
+    border: 1px solid #a9d9e7;
+    font-size: 11px;
+    margin: 6px 6px 0 0;
+    overflow: visible;
+    position: fixed;
+    top: 0;
+    z-index: 40;
+}
+
+.compare-items {
+    float: left;
+    height: 80px;
+    width: 615px;
+    overflow: hidden;
+}
+
+.compare-items .compare-item {
+    float: left;
+    height: 70px;
+    width: 130px;
+    position: relative;
+    margin: 4px 18px 0 5px;
+    background-color: #e7f2f6;
+}
+
+.compare_list li {
+    padding: 8px;
+    display: inline-block;
+}
+
+.empty_item>.thumb_holder {
+    background: url("../../compare_add_item-454c2f17.jpg") no-repeat scroll 0 4px white;
+}
+
+.thumb_holder {
+    display: block;
+    float: left;
+    height: 50px;
+    margin: 3px 4px 3px 3px;
+    width: 43px;
+}
+
+.delete, .compare-cart-wrapper .close {
+    background: url("../../compare-cart-sprite-6d5e187e.png") no-repeat scroll -177px -2px transparent;
+    cursor: pointer;
+    display: block;
+    height: 16px;
+    position: absolute;
+    right: -8px;
+    bottom: -4px;
+    width: 17px;
+}
+
+.btn {
+    margin: 22px 10px 0 0;
+    display: block;
+    border: 0;
+    background: #ffa930 !important;
+    padding: 4px !important;
+    font: 12px/32px Arial, Helvetica, sans-serif !important;
+    text-align: center;
+    text-transform: capitalize;
+    white-space: nowrap;
+    color: #fff !important;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    transition: 0.5s;
+}
+
+/*.btn{*/
+/*background: #ffa930 !important;*/
+/*color: white;*/
+/*}*/
+
+.compare-cart-wrapper>.compare-controls>.close {
+    background: url("../../hf-icons-sprite-f4cf886d.png") no-repeat scroll -49px -163px transparent;
+    height: 17px;
+    width: 17px;
+    cursor: pointer;
+    right: -12px;
+    top: -7px;
+    opacity: 1.2;
+}
+
+.btn:hover {
+    background: #424242 !important;
+    color: #fff !important;
+}

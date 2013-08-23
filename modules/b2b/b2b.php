@@ -116,4 +116,22 @@ class B2b extends Module
 
         return $protocol_link . Tools::getShopDomainSsl() . $request . '?' . $params;
     }
+
+    public function getProductsList($categoryId)
+    {
+        $query = 'select id_category from ' . _DB_PREFIX_ . 'category where id_parent=' . $categoryId;
+        $subCategories = Db::getInstance()->ExecuteS($query);
+        $allSelectedCategories = array();
+        foreach ($subCategories as $row) {
+            $allSelectedCategories[] = $row['id_category'];
+        }
+        $categoryString = $categoryId;
+        if (!empty($allSelectedCategories))
+            $categoryString = implode(',', $allSelectedCategories) . ',' . $categoryId;
+        $sql = 'select distinct(' . _DB_PREFIX_ . 'product_lang.id_product) as id_product,' . _DB_PREFIX_ . 'product_lang.name as name from ' . _DB_PREFIX_ . 'category_product join ' . _DB_PREFIX_ . 'product_lang on ' . _DB_PREFIX_ . 'category_product.id_product=' . _DB_PREFIX_ . 'product_lang.id_product join ' . _DB_PREFIX_ . 'product on ' . _DB_PREFIX_ . 'product_lang.id_product=' . _DB_PREFIX_ . 'product.id_product where ' . _DB_PREFIX_ . 'category_product.id_category in(' . $categoryString . ') and ' . _DB_PREFIX_ . 'product.active=1';
+        $results = Db::getInstance()->ExecuteS($sql);
+        if ($results)
+            return $results;
+        return array();
+    }
 }

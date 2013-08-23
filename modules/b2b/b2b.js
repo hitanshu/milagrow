@@ -82,13 +82,48 @@ $(document).ready(function () {
         });
     });
 
+    $("#category").on('change', function () {
+        var category = $.trim($("#category option:selected").val());
+        if (category) {
+            $('#ajax-loader-category').show();
+            $.ajax({
+                type: "POST",
+                url: '/modules/b2b/productlist.php',
+                data: {category: category},
+                success: function (data) {
+                    $('#ajax-loader-category').hide();
+                    var option = '<option value="">Select Product</option>';
+                    $.each(data, function (i, el) {
+                        option += '<option value="' + el.id_product + '">' + el.name + '</option>'
+                    });
+                    $('#product')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append(option)
+                    ;
+                },
+                dataType: 'json'
+            });
+        }
+        else {
+            $('#product')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="">Select Product</option>')
+            ;
+        }
+    });
 
     $("#b2b").submit(function (e) {
         e.preventDefault();
         var name = $.trim($('#name').val());
         var email = $.trim($('#email').val());
         var mobile = $.trim($('#mobile').val());
-        var quantity = $.trim($('#quantity').val());
+        var city = $.trim($('#city').val());
+        var state = $.trim($('#state').val());
+        var quantity = $.trim($('#quantity option:selected').val());
         var product = $.trim($("#product option:selected").val());
 
         if (!name) {
@@ -108,9 +143,20 @@ $(document).ready(function () {
             alert('Mobile is required');
             return;
         }
-
         else if (!validatePhone(mobile)) {
             alert('Please enter valid 10 digit mobile number.');
+            return;
+        }
+        else if (!city) {
+            alert('City is required');
+            return;
+        }
+        else if (!state) {
+            alert('State is required');
+            return;
+        }
+        else if (!category) {
+            alert('Category is Required');
             return;
         }
         else if (!product) {

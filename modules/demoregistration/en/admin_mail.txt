@@ -1,0 +1,11 @@
+Dear Administrator,
+A new demo registration has been requested online. The details for registration are
+Name : {name}
+Email : {email}
+Mobile : {mobile}
+Product : {product}
+Order Id : {order_id}
+Date and Time : {date}
+Address : {address}
+Transaction Number : {nb_order_no}
+City : {city}

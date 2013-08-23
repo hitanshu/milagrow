@@ -8,10 +8,10 @@ define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
 define('_SMS_USERNAME', 'GreenApple1');
 define('_SMS_PASSWORD', 'GreenApple1');
 define('_SMS_SENDERID', 'MSNGRi');
-define('_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS', 'Thank you placing the order, %s of amount Rs.%s. Your order is being processed. Please check your email for additional details.');
-define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER_WITH_CARRIER_NAME', 'Your order, %s , has been shipped via %s with Tracking ID %s. Please check your account for additional details.');
-define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER', 'Your order, %s , has been shipped with Tracking ID %s. Please check your account for additional details.');
-define('_SMS_MESSAGE_SHIPPED_WITHOUT_TRACKING_NUMBER', 'Your order, %s , has been shipped. Please check your account for additional details.');
+define('_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS', 'Thank you placing order %s. Your order is being processed and will be dispatched in 24 working hours. Please check your email for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER_WITH_CARRIER_NAME', 'Your order %s has been shipped via %s with Tracking ID %s. Please check your email for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITH_TRACKING_NUMBER', 'Your order  %s has been shipped with Tracking ID %s. Please check your email for additional details.');
+define('_SMS_MESSAGE_SHIPPED_WITHOUT_TRACKING_NUMBER', 'Your order %s has been shipped. Please check your email for additional details.');
 class SmsModule extends Module
 {
     public function __construct()
@@ -55,7 +55,7 @@ class SmsModule extends Module
                 $reference_number = $row['reference'];
                 $mobile = $row['phone_mobile'];
                 $amount = $row['amount'];
-                $message = sprintf(_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS, $reference_number, $amount);
+                $message = sprintf(_SMS_MESSAGE_ORDER_PAYMENT_SUCCESS, $reference_number);
                 if (_PS_SMS_SEND) {
                     $username = _SMS_USERNAME;
                     $password = _SMS_PASSWORD;
@@ -87,6 +87,7 @@ class SmsModule extends Module
             $carriersArr = array('FDX' => 'FEDEX', 'BLD' => 'BlueDart');
             $sql = 'SELECT ' . _DB_PREFIX_ . 'orders.reference,' . _DB_PREFIX_ . 'address.phone_mobile,' . _DB_PREFIX_ . 'order_state_lang.name as status,' . _DB_PREFIX_ . 'orders.shipping_number as shipping_number FROM ' . _DB_PREFIX_ . 'orders join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'orders.id_customer=' . _DB_PREFIX_ . 'customer.id_customer join ' . _DB_PREFIX_ . 'address on ' . _DB_PREFIX_ . 'orders.id_address_delivery=' . _DB_PREFIX_ . 'address.id_address join ' . _DB_PREFIX_ . 'order_state_lang on ' . _DB_PREFIX_ . 'order_state_lang.id_order_state=' . _DB_PREFIX_ . 'orders.current_state WHERE ' . _DB_PREFIX_ . 'orders.id_order=' . $params['id_order'];
             if ($row = Db::getInstance()->getRow($sql)) {
+                if ($row['status'] == "Shipped" || $row['status'] == "shipped") {
                 $reference_number = $row['reference'];
                 $mobile = $row['phone_mobile'];
                 $shipping_number = $row['shipping_number'];
@@ -108,7 +109,6 @@ class SmsModule extends Module
                 }
 
                 if (_PS_SMS_SEND) {
-                    if ($row['status'] == "Shipped" || $row['status'] == "shipped") {
                         $username = _SMS_USERNAME;
                         $password = _SMS_PASSWORD;
                         //create api url to hit

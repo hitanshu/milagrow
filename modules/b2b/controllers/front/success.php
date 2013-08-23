@@ -40,7 +40,7 @@ class B2bSuccessModuleFrontController extends ModuleFrontController
                 Mail::Send(
                     (int)1,
                     'b2b_admin_mail',
-                    Mail::l('Bulk Purchase Form', (int)1),
+                    Mail::l('Bulk Purchase Details', (int)1),
                     $adminVars,
                     $adminEmail,
                     'admin',
@@ -61,8 +61,8 @@ class B2bSuccessModuleFrontController extends ModuleFrontController
                     'cart_rule.id_cart_rule=' . _DB_PREFIX_ . 'cart_rule_product_rule_group.id_cart_rule where active=1 and '
                     . _DB_PREFIX_ . 'cart_rule_product_rule_group.quantity>=' . $quantity[0];
                 if (isset($quantity[1]))
-                    $sql .= ' and' . _DB_PREFIX_ . ' cart_rule_product_rule_group.quantity<=' . $quantity[1];
-                $sql .= ' and ' . _DB_PREFIX_ . 'cart_rule_product_rule_value.id_item=' . $b2bRow['product'] . ' and date_from <=\'' . $nextDate . '\' and date_to>\'' . $currentDate . '\'';
+                    $sql .= ' and ' . _DB_PREFIX_ . 'cart_rule_product_rule_group.quantity<=' . $quantity[1];
+                $sql .= '  and ' . _DB_PREFIX_ . 'cart_rule_product_rule_value.id_item=' . $b2bRow['product'] . ' and date_from <=\'' . $nextDate . '\' and date_to>\'' . $currentDate . '\'';
                 if ($row = Db::getInstance()->getRow($sql)) {
                     //coupon found sent mail to user coupon
                     $vars = array(
@@ -75,7 +75,7 @@ class B2bSuccessModuleFrontController extends ModuleFrontController
                     Mail::Send(
                         (int)1,
                         'b2b_mail',
-                        Mail::l('Discount Coupon Related to your B2B Order', (int)1),
+                        Mail::l('Milagrow Human Tech : Bulk Purchase Discount Coupon', (int)1),
                         $vars,
                         $b2bRow['email'],
                         $b2bRow['name'],

@@ -11,7 +11,7 @@ define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
 define('_SMS_USERNAME', 'GreenApple1');
 define('_SMS_PASSWORD', 'GreenApple1');
 define('_SMS_SENDERID', 'MSNGRi');
-define('_B2B_SMS_MESSAGE', 'Please use code, %s, to verify your mobile at Milagrow Bulk Purchase. Please ignore, if you have received this message in error.');
+define('_B2B_SMS_MESSAGE', 'Please use code %s to validate your inquiry at Milagrow Bulk Purchase. Please ignore if you have received this message in error.');
 
 class B2bVerifyModuleFrontController extends ModuleFrontController
 {

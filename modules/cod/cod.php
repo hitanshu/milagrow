@@ -29,8 +29,8 @@ if (!defined('_PS_VERSION_'))
 
 require("integral_evolution/libFunctions.php");
 define('_MERCHANT_ID', 'M_milagrow_6881');
-define('_DOWN_PAYMENT_AMOUNT', 500);
-define('_BILLING_PAGE_HEADING', 'Milagrow Humantech Down Payment');
+define('_DOWN_PAYMENT_AMOUNT', 10);
+define('_BILLING_PAGE_HEADING', 'Milagrow HumanTech COD(Cash On Delivery)');
 class COD extends PaymentModule
 {
     public function __construct()
@@ -41,7 +41,8 @@ class COD extends PaymentModule
         $this->author = 'GAPS';
         $this->need_instance = 1;
 
-        $this->currencies = false;
+        $this->currencies = true;
+        $this->currencies_mode = 'radio';
 
         parent::__construct();
 
@@ -99,7 +100,7 @@ class COD extends PaymentModule
         //get customer delivery address and name by querying
         $id_address_delivery = $params['cart']->id_address_delivery;
         $id_address_invoice = $params['cart']->id_address_invoice;
-        $Redirect_Url = Tools::getShopDomainSsl() . _MODULE_DIR_ . $this->name . '/integral_evolution/submit.php'; //your redirect URL where your customer will be redirected after authorisation from CCAvenue
+        $Redirect_Url = Tools::getShopDomainSsl(true, true) . '/index.php?fc=module&module=' . $this->name . '&controller=paymentnotification'; //your redirect URL where your customer will be redirected after authorisation from CCAvenue
         if ($id_address_delivery == $id_address_invoice) {
             $sql = 'SELECT ' . _DB_PREFIX_ . 'address.firstname,' . _DB_PREFIX_ . 'address.lastname,address1,address2,city,postcode,phone,email,' . _DB_PREFIX_ . 'country_lang.name as country,' . _DB_PREFIX_ . 'state.name as state FROM ' . _DB_PREFIX_ . 'address join ' . _DB_PREFIX_ . 'country_lang on ' . _DB_PREFIX_ . 'country_lang.id_country=' . _DB_PREFIX_ . 'address.id_country Join ' . _DB_PREFIX_ . 'state on ' . _DB_PREFIX_ . 'address.id_state=' . _DB_PREFIX_ . 'state.id_state join ' . _DB_PREFIX_ . 'customer on ' . _DB_PREFIX_ . 'customer.id_customer=' . _DB_PREFIX_ . 'address.id_customer WHERE id_address =' . $id_address_invoice;
             if ($row = Db::getInstance()->getRow($sql)) {
@@ -154,10 +155,18 @@ class COD extends PaymentModule
                 }
 
         }
-//take user to the payment gateway screen for some down payment
-        $requestArray = array('Merchant_id' => _MERCHANT_ID,
-            'Amount' => _DOWN_PAYMENT_AMOUNT,
-            'Redirect_Url' => $Redirect_Url,
+
+        $Merchant_Id = _MERCHANT_ID; //This id(also User_Id)  available at "Generate Working Key" of "Settings & Options"
+        $Order_Id = $params['objOrder']->reference; //your script should substitute the order description here in the quotes provided here
+        $Amount = _DOWN_PAYMENT_AMOUNT; //your script should substitute the amount here in the quotes provided here
+        $WorkingKey = "f6srdljv9krmyof389tjdixf86bgmc55"; //put in the 32 bit alphanumeric key in the quotes provided here.Please note that get this key login to your
+
+        $Checksum = getChecksum($Merchant_Id, $Order_Id, $Amount, $Redirect_Url, $WorkingKey);
+
+        $smarty->assign(array(
+            'Merchant_id' => _MERCHANT_ID,
+            'amount' => _DOWN_PAYMENT_AMOUNT,
+            'redirectLink' => $Redirect_Url,
             'Order_Id' => $params['objOrder']->reference,
             'delivery_cust_name' => $delivery_cust_name,
             'delivery_cust_address' => $delivery_cust_address,
@@ -176,32 +185,8 @@ class COD extends PaymentModule
             'billing_cust_tel' => $billing_cust_tel,
             'billing_cust_email' => $billing_cust_email,
             'billingPageHeading' => $billingPageHeading,
-            'delivery_cust_notes' => $delivery_cust_notes
-
-        );
-        $Merchant_Id = _MERCHANT_ID; //This id(also User_Id)  available at "Generate Working Key" of "Settings & Options"
-        $Order_Id = //your script should substitute the order description here in the quotes provided here
-        $Amount = _DOWN_PAYMENT_AMOUNT; //your script should substitute the amount here in the quotes provided here
-        $WorkingKey = "f6srdljv9krmyof389tjdixf86bgmc55"; //put in the 32 bit alphanumeric key in the quotes provided here.Please note that get this key login to your
-        $ccaRequest = "";
-        $pname = "";
-        $pvalue = ""; //CCAvenue merchant account and visit the "Generate Working Key" section at the "Settings & Options" page.
-
-        $Checksum = getChecksum($Merchant_Id, $Order_Id, $Amount, $Redirect_Url, $WorkingKey);
-        $keys = array_keys($requestArray);
-        for ($index = 0; $index < sizeof($keys); $index++) {
-            $pname = "" . $keys[$index];
-            $pvalue = $requestArray[$pname];
-            $ccaRequest .= $pname . "=" . $pvalue . "&";
-        }
-        $ccaRequest .= "Checksum=" . $Checksum;
-        $path = getcwd() . _MODULE_DIR_ . 'cod/ccavutil.jar';
-        $out = exec("java -jar $path  $WorkingKey \"$ccaRequest\" enc", $encRequest);
-        $smarty->assign(array(
-            'enc_request' => $encRequest[0],
-            'merchant_id' => $Merchant_Id,
-            'path' => $path,
-            'output' => $out
+            'delivery_cust_notes' => $delivery_cust_notes,
+            'checksum' => $Checksum,
         ));
 
         return $this->display(__FILE__, 'confirmation.tpl');

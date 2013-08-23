@@ -5,7 +5,7 @@ define('_SMS_URL', 'http://admin.dove-sms.com/TransSMS/SMSAPI.jsp');
 define('_SMS_USERNAME', 'GreenApple1');
 define('_SMS_PASSWORD', 'GreenApple1');
 define('_SMS_SENDERID', 'MSNGRi');
-define('_B2B_SMS_MESSAGE', 'Please use code, %s, to verify your mobile at Milagrow Bulk Purchase. Please ignore, if you have received this message in error.');
+define('_B2B_SMS_MESSAGE', 'Please use code %s to validate your inquiry at Milagrow Bulk Purchase. Please ignore if you have received this message in error.');
 class B2bInitModuleFrontController extends ModuleFrontController
 {
 
@@ -55,7 +55,7 @@ class B2bInitModuleFrontController extends ModuleFrontController
 
         $this->context->smarty->assign(array(
             'form_action' => B2b::getShopDomainSsl(true, true) . '/index.php?fc=module&module=' . $this->b2b->name . '&controller=init',
-            'products' => $this->getProducts(),
+            'categories' => $this->getCategories(),
             'jsSource' => $this->module->getPathUri() . 'b2b.js',
             'this_path' => $this->module->getPathUri()
         ));
@@ -63,9 +63,9 @@ class B2bInitModuleFrontController extends ModuleFrontController
         $this->setTemplate('b2b.tpl');
     }
 
-    private function getProducts()
+    private function getCategories()
     {
-        $sql = 'select * from ' . _DB_PREFIX_ . 'product_lang';
+        $sql = 'select * from ' . _DB_PREFIX_ . 'category_lang join ' . _DB_PREFIX_ . 'category on ' . _DB_PREFIX_ . 'category_lang.id_category=' . _DB_PREFIX_ . 'category.id_category where active=1 and '._DB_PREFIX_.'category.id_category in(6,7,10)';
         if ($results = Db::getInstance()->ExecuteS($sql))
             return $results;
         return array();

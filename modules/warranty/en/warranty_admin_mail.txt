@@ -1,0 +1,11 @@
+Dear Administrator,
+ A new product has been registered online. The details of registration are
+Name : {name}
+Email : {email}
+Mobile : {mobile}
+Product : {product}
+Product Number : {productNumber}
+Store : {storeName}
+Address : {address}
+State : {state}
+City : {city}

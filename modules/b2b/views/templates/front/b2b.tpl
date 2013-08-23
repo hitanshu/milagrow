@@ -64,17 +64,34 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <label>City</label>
+                                            <label for="city" class="required"><em>*</em>City</label>
 
                                             <div class="input-box">
                                                 <input type="text" id="city" name="city"/>
                                             </div>
                                         </li>
                                         <li>
-                                            <label>State</label>
+                                            <label for="state" class="required"><em>*</em>State</label>
 
                                             <div class="input-box">
                                                 <input type="text" id="state" name="state"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="category" class="required"><em>*</em>Select Category</label>
+
+                                            <div class="input-box">
+                                                <select name="category" id="category">
+                                                    <option value="">Select Category</option>
+                                                    {foreach from=$categories key=myId item=i}
+                                                        <option value="{$i.id_category}">{$i.name}</option>
+                                                    {/foreach}
+                                                </select>
+                                                <span
+                                                        id="ajax-loader-category"
+                                                        style="display: none"><img
+                                                            src="{$this_path}ajax-loader.gif"
+                                                            alt="{l s='ajax-loader' mod='b2b'}"/></span>
                                             </div>
                                         </li>
                                         <li>
@@ -83,9 +100,6 @@
                                             <div class="input-box">
                                                 <select name="product" id="product">
                                                     <option value="">Select Product</option>
-                                                    {foreach from=$products key=myId item=i}
-                                                        <option value="{$i.id_product}">{$i.name}</option>
-                                                    {/foreach}
                                                 </select>
                                             </div>
                                         </li>

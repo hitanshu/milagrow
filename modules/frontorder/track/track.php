@@ -16,7 +16,7 @@ try {
     $sql = 'SELECT tracking_number from ' . _DB_PREFIX_ . 'order_carrier WHERE id_order=' . $order_id;
     if ($row = Db::getInstance()->getRow($sql)) {
         $tracking_number = $row['tracking_number'];
-        $data = explode('-', 'FDX-1234');
+        $data = explode('-', $tracking_number);
         $carrier = '';
         if (!empty($data))
             $carrier = $data[0];

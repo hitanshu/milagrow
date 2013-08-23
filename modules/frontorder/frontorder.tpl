@@ -186,10 +186,10 @@
 </tr>
 {assign var=down_payment value=0}
 {foreach from=$order_invoice item=payment}
-    {if (isset($payment['payment_method'])&& $payment['payment_method']=="downPayment")}
+    {if (isset($payment['payment_method'])&& $payment['payment_method']=="ccavenue")}
         {$down_payment=$down_payment+$payment['amount']}
         <tr class="item">
-            <td colspan=5>{l s='Down Payment(-)' pdf='true'}<span
+            <td colspan=5>{l s='CCAVENUE Payment(-)' pdf='true'}<span
                         class="price-wrapping">{displayPrice price=$payment['amount'] currency=$order->id_currency}</span>
             </td>
         </tr>

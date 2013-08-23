@@ -1,0 +1,78 @@
+.ccavenue-wrap { clear: both; margin: 0px auto; max-width: 1024px; min-width: 930px; overflow: hidden; }
+
+p.ccavenue-intro {
+	clear: both; color: #676767; margin: 0px 0px 0px 0px; padding: 0px 0px 25px 430px; overflow: hidden;
+	font-size: 24px; line-height: 32px; letter-spacing: 1px;
+}
+p.ccavenue-intro span { color: #F47C20; display: inline-block; font-size: 36px; text-transform: uppercase; }
+a.ccavenue-logo { display: inline-block; float: left; margin: 5px 0px 0px -430px; }
+p.ccavenue-intro a.ccavenue-link { float: right; margin: -5px 0px 0px 0px; }
+
+.ccavenue-content { border: #8BC3EA solid 1px; clear: both; margin: 0px 0px 15px 0px; padding: 10px 15px 0px 15px; overflow: hidden; }
+.ccavenue-content h3 { color: #1299DE; font-size: 20px; font-weight: normal; line-height: 24px; margin: 0px 0px 15px 0px; }
+.ccavenue-content p { color: #676767; font-size: 13px; line-height: 18px; margin-bottom: 15px; }
+
+.ccavenue-content ul { list-style: none; margin: 0px 0px 7px 0px; overflow: hidden; padding: 0px; }
+.ccavenue-content ul li { background: url(../img/bullet.gif) 5px 3px no-repeat; color: #676767; font-size: 13px; font-weight: bold; line-height: 18px; margin: 0px 0px 8px 0px; padding: 0px 0px 0px 30px; }
+
+.ccavenue-content p.ccavenue-call { clear: both; color: #F47C20; font-size: 18px; padding-top: 10px; }
+.ccavenue-content p.ccavenue-call a.ccavenue-link { float: left; margin: -10px 20px 0px 0px; }
+
+.ccavenue-right { float: right; margin: -5px -10px 0px 80px; width: 430px; }
+.ccavenue-img { margin: 0px 0px 15px 0px; }
+.ccavenue-content ol { list-style: decimal; list-style-position: outside; margin: 0px 0px 7px 0px; overflow: hidden; padding: 0px 10px 0px 20px; }
+.ccavenue-content ol li { color: #676767; font-size: 13px; line-height: 18px; margin: 0px 0px 8px 0px; padding: 0px 0px 0px 0px; }
+
+.block-ccavenue { background-color: #E2EFF8; float: left; margin-bottom: 15px; min-height: 142px; overflow: hidden; text-align: center; width: 32%; }
+.block-ccavenue.middle { margin: 0px 2%; }
+.block-ccavenue p { color: #676767; display: inline-block; font-size: 18px; line-height: 28px; letter-spacing: 1px; margin: 0px; padding: 15px; }
+.block-ccavenue span.ccavenue-big1 { font-size: 24px; font-weight: bold; padding: 0px; }
+.block-ccavenue span.ccavenue-big { color: #F47C20; display: inline-block; font-size: 24px; font-weight: bold; padding: 0px; }
+
+a.ccavenue-link {
+	display: inline-block;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 14px;
+	padding: 10px 22px;
+	text-decoration: none;
+	text-shadow: 1px -1px 1px #A95336;
+}
+a.ccavenue-link {
+	color: white !important;
+	border: solid 1px #DA7C0C;
+	background: #F60;
+	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFAA51A', endColorstr='#FFFF6600');
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #FAA51A), color-stop(100%, #F60));
+	background-image: -webkit-linear-gradient(#FAA51A, #F60);
+	background-image: -moz-linear-gradient(#FAA51A, #F60);
+	background-image: -o-linear-gradient(#FAA51A, #F60);
+	background-image: linear-gradient(#FAA51A,#F60);
+}
+a.ccavenue-link:hover {
+	color: white !important;
+	background: #F47C20;
+	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFF88E11', endColorstr='#FFF06015');
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #F88E11), color-stop(100%, #F06015));
+	background-image: -webkit-linear-gradient(#F88E11, #F06015);
+	background-image: -moz-linear-gradient(#F88E11, #F06015);
+	background-image: -o-linear-gradient(#F88E11, #F06015);
+	background-image: linear-gradient(#F88E11,#F06015);
+}
+
+.MB10 { margin-bottom: 10px; }
+.MB15, #content .MB15 { margin-bottom: 15px; }
+.PT03 { padding-top: 0.3em; }
+.PT03 input[type="radio"] { vertical-align: text-top; }
+fieldset h4 { margin-top: 0px; }
+fieldset label.inner-label {
+	color: #585A69;
+	float: none;
+	font-size: 1.1em;
+	font-weight: normal;
+	margin-right: 15px;
+	padding: 0px;
+	text-shadow: 0 1px 0 #FFFFFF;
+	width: auto;
+}
+fieldset span.small { color: #7F7F7F; }

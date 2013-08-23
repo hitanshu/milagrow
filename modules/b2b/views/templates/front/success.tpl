@@ -12,7 +12,7 @@
                         online store.
 
                     </p>
-
+                    <br>
                     <p>
                         For any queries, complaints or suggestions, please email us at customercare@milagrow.in or call
                         09953476189 and 0124-4309570/71/72. Timings: 9:30 AM - 7:30 PM.</p>

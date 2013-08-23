@@ -76,4 +76,6 @@ class CodValidationModuleFrontController extends ModuleFrontController
 
 		$this->setTemplate('validation.tpl');
 	}
+
+
 }
